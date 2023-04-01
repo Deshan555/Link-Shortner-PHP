@@ -1,36 +1,42 @@
 <?php
-   class MyDB extends SQLite3 {
-      function __construct() {
-         $this->open('test.db');
+   class MyDB extends SQLite3 
+   {
+      function __construct() 
+      {
+         $this->open('URL_list.db');
       }
    }
-   
-   $db = new MyDB();
-   if(!$db){
+
+   if(isset($_POST['submit']))
+   {
+    $db = new MyDB();
+    
+    if(!$db)
+    {
       echo $db->lastErrorMsg();
-   } else {
+    } 
+    else 
+    {
       echo "Opened database successfully\n";
-   }
+    }
+
+    $base_url = $_POST['base_url'];
 
    $sql =<<<EOF
-      INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY)
-      VALUES (1, 'Paul', 32, 'California', 20000.00 );
-
-      INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY)
-      VALUES (2, 'Allen', 25, 'Texas', 15000.00 );
-
-      INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY)
-      VALUES (3, 'Teddy', 23, 'Norway', 20000.00 );
-
-      INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY)
-      VALUES (4, 'Mark', 25, 'Rich-Mond ', 65000.00 );
-EOF;
+      INSERT INTO Links_List (BASE_URL) VALUES ("$base_url");
+      EOF;
 
    $ret = $db->exec($sql);
-   if(!$ret) {
+   
+   if(!$ret) 
+   {
       echo $db->lastErrorMsg();
-   } else {
+   } 
+   else 
+   {
       echo "Records created successfully\n";
    }
    $db->close();
+   }
+   
 ?>
