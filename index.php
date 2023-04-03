@@ -71,6 +71,8 @@ div
 }
 </style>
 
+<title>URL Shortener</title>
+
 </head>
 
 <body id="app">
