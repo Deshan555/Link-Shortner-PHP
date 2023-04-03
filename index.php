@@ -32,49 +32,110 @@
 
 <link href="style.css" rel="stylesheet">
 
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+input[type=text], select 
+{
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=submit] 
+{
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover 
+{
+  background-color: #45a049;
+}
+
+div 
+{
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+</style>
+
 </head>
-<body>
 
-<h1>A Fancy Table</h1>
+<body id="app">
 
-<form method="POST" action="database/insert.php" name="forms" style="width: 100%;">
+<h1>URL shortener</h1>
 
-    <div style="width: 100%; ">
-    <input type="url" name="base_url" id="base_url" placeholder="type your url">
-        <button type="submit" name="submit" id="submit">SUBMIT</button>
-    </div>
+<div>
 
-</form>
+  <!--HTML FORM FOR URL SUBMISSION-->
+  <form method="POST" action="database/insert.php">
+    
+    <label for="lname">Long URL</label>
+    
+    <input type="text" id="lname" name="base_url" placeholder="http://www.example.com/examples">
 
-<table id="customers">
-  <tr>
-    <th>URL ID</th>
-    <th>SHORT URL</th>
-    <th>BASE URL</th>
-  </tr>
+    <input type="submit" name="submit" id="submit">
 
-  <?php 
+  </form>
+
+  <h3>Your Links</h3>
+
+  <!--HTML TABLE FOR RESULTS SHOW-->
+  
+  <table id="customers">
+    
+    <tr>
+      <th>URL ID</th>
+      <th>SHORT URL</th>
+      <th>BASE URL</th>
+      <th>REMOVE</th>
+    </tr>
+    
+    <?php 
     while($row = $ret->fetchArray(SQLITE3_ASSOC)) 
     { ?>
-        
-
-
-        <tr>
-    <td><?php echo $row['ID']?></td>
     
-    <td><a href="<?php echo $row['BASE_URL']?>" target="_blank">http://localhost/r?c=<?php echo $row['ID']; ?></a></td>
+    <tr>
+      
+      <td><?php echo $row['ID']?></td>
+      
+      <td><a href="<?php echo $row['BASE_URL']?>" target="_blank">http://localhost/r?c=<?php echo $row['ID']; ?></a></td>
+      
+      <td><?php echo $row['BASE_URL']?></td>
 
-    <td><?php echo $row['BASE_URL']?></td>
-  </tr>
-    <?php }
+      <td>
+        <form action="delete.php" method="POST" id="delete<?php echo $row['ID'];?>">
+                              
+          <input type="hidden" value="<?php echo $row['ID']; ?>" name="delete_id">
+                              
+          <i class="material-icons" style="color:red; cursor: pointer;" 
+            onclick="document.getElementById('delete'+<?php echo $row['ID'];?>).submit();">delete</i>
+                            
+        </form>
+      </td>
+  
+    </tr>
+  
+    <?php } $db->close(); ?>
+  
+  </table>
 
-     $db->close();
-  ?>
-
-
-</table>
+</div>
 
 </body>
+
 </html>
 
 
