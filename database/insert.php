@@ -34,7 +34,7 @@
    } 
    else 
    {
-      echo "Records created successfully\n";
+      header('location: ../index.php');
    }
    $db->close();
    }
